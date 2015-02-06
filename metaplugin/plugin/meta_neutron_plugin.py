@@ -16,6 +16,7 @@
 from oslo.config import cfg
 from oslo.utils import importutils
 
+from metaplugin.plugin import meta_db_v2
 from neutron.common import exceptions as exc
 from neutron.common import topics
 from neutron import context as neutron_context
@@ -28,7 +29,6 @@ from neutron.extensions import flavor as ext_flavor
 from neutron.i18n import _LE
 from neutron.openstack.common import log as logging
 from neutron.plugins.metaplugin.common import config  # noqa
-from neutron.plugins.metaplugin import meta_db_v2
 from neutron.plugins.metaplugin import meta_models_v2
 
 
