@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from neutron.tests.unit.metaplugin import test_metaplugin
+from metaplugin.tests.unit import test_metaplugin
 from neutron.tests.unit import test_db_plugin as test_plugin
 from neutron.tests.unit import test_l3_plugin
 
