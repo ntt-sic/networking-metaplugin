@@ -20,6 +20,7 @@ from metaplugin.plugin import meta_db_v2
 from neutron.common import exceptions as exc
 from neutron.common import topics
 from neutron import context as neutron_context
+from neutron.db import agentschedulers_db
 from neutron.db import db_base_plugin_v2
 from neutron.db import external_net_db
 from neutron.db import extraroute_db
@@ -66,7 +67,8 @@ class FaildToAddFlavorBinding(exc.NeutronException):
 
 class MetaPluginV2(db_base_plugin_v2.NeutronDbPluginV2,
                    external_net_db.External_net_db_mixin,
-                   extraroute_db.ExtraRoute_db_mixin):
+                   extraroute_db.ExtraRoute_db_mixin,
+                   agentschedulers_db.DhcpAgentSchedulerDbMixin):
 
     def __init__(self, configfile=None):
         super(MetaPluginV2, self).__init__()
