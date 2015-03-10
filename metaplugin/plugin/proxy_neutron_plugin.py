@@ -14,12 +14,12 @@
 #    under the License.
 
 from oslo_config import cfg
+from oslo_log import log as logging
 
 from neutron.db import db_base_plugin_v2
 from neutron.db import external_net_db
 from neutron.db import l3_db
 from neutron.i18n import _LE, _LW
-from neutron.openstack.common import log as logging
 from neutronclient.common import exceptions
 from neutronclient.v2_0 import client
 
