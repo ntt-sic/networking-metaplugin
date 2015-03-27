@@ -17,6 +17,7 @@ import mock
 from oslo_config import cfg
 import testtools
 
+from metaplugin.plugin import meta_neutron_plugin as meta_plugin
 from neutron.common import exceptions as exc
 from neutron.common import topics
 from neutron import context
@@ -26,11 +27,10 @@ from neutron.extensions import flavor as ext_flavor
 from neutron.openstack.common import uuidutils
 from neutron.plugins.metaplugin import meta_neutron_plugin
 from neutron.tests.unit import testlib_api
-from neutron.tests.unit import testlib_plugin
 
 CONF_FILE = ""
 META_PATH = "neutron.plugins.metaplugin"
-FAKE_PATH = "neutron.tests.unit.metaplugin"
+FAKE_PATH = "metaplugin.tests.unit"
 PROXY_PATH = "%s.proxy_neutron_plugin.ProxyPluginV2" % META_PATH
 PLUGIN_LIST = """
 fake1:%s.fake_plugin.Fake1,fake2:%s.fake_plugin.Fake2,proxy:%s
@@ -68,8 +68,7 @@ def unregister_meta_hooks():
         models_v2.Port, 'metaplugin_port', None, None, None)
 
 
-class MetaNeutronPluginV2Test(testlib_api.SqlTestCase,
-                              testlib_plugin.PluginSetupHelper):
+class MetaNeutronPluginV2Test(testlib_api.SqlTestCase):
     """Class conisting of MetaNeutronPluginV2 unit tests."""
 
     has_l3 = True
@@ -301,7 +300,7 @@ class MetaNeutronPluginV2Test(testlib_api.SqlTestCase,
 
         self.plugin.delete_router(self.context, router_ret1['id'])
         self.plugin.delete_router(self.context, router_ret2['id'])
-        with testtools.ExpectedException(meta_neutron_plugin.FlavorNotFound):
+        with testtools.ExpectedException(meta_plugin.FlavorNotFound):
             self.plugin.get_router(self.context, router_ret1['id'])
 
     def test_extension_method(self):
@@ -332,11 +331,11 @@ class MetaNeutronPluginV2Test(testlib_api.SqlTestCase,
         self.fail("No Error is not raised")
 
     def test_create_network_flavor_fail(self):
-        with mock.patch('neutron.plugins.metaplugin.meta_db_v2.'
+        with mock.patch('metaplugin.plugin.meta_db_v2.'
                         'add_network_flavor_binding',
                         side_effect=Exception):
             network = self._fake_network('fake1')
-            self.assertRaises(meta_neutron_plugin.FaildToAddFlavorBinding,
+            self.assertRaises(meta_plugin.FaildToAddFlavorBinding,
                               self.plugin.create_network,
                               self.context,
                               network)
@@ -344,11 +343,11 @@ class MetaNeutronPluginV2Test(testlib_api.SqlTestCase,
             self.assertEqual(count, 0)
 
     def test_create_router_flavor_fail(self):
-        with mock.patch('neutron.plugins.metaplugin.meta_db_v2.'
+        with mock.patch('metaplugin.plugin.meta_db_v2.'
                         'add_router_flavor_binding',
                         side_effect=Exception):
             router = self._fake_router('fake1')
-            self.assertRaises(meta_neutron_plugin.FaildToAddFlavorBinding,
+            self.assertRaises(meta_plugin.FaildToAddFlavorBinding,
                               self.plugin.create_router,
                               self.context,
                               router)
