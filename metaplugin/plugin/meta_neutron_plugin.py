@@ -300,11 +300,12 @@ class MetaPluginV2(db_base_plugin_v2.NeutronDbPluginV2,
 
     # This is necessary since there is a case that
     # NeutronManager.get_plugin()._make_port_dict is called.
-    def _make_port_dict(self, port):
+    def _make_port_dict(self, port, fields=None, process_extensions=True):
         context = neutron_context.get_admin_context()
         plugin = self._get_plugin_by_network_id(context,
                                                 port['network_id'])
-        return plugin._make_port_dict(port)
+        return plugin._make_port_dict(port, fields=fields,
+                                      process_extensions=process_extensions)
 
     def get_port(self, context, id, fields=None):
         port_in_db = self._get_port(context, id)
